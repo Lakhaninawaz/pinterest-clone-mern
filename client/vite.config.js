@@ -7,6 +7,7 @@ export default defineConfig({
           external: ['react-dom/client'],
         },
       },
+      base: './',
   plugins: [
     {
       name: 'treat-js-files-as-jsx',
