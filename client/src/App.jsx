@@ -1,4 +1,3 @@
-/* eslint-disable react/no-unescaped-entities */
 import './App.css'
 import Footer from './components/Footer'
 import Header from './components/Header'

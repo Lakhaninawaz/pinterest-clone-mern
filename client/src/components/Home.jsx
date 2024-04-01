@@ -1,7 +1,4 @@
 import { CircularProgress } from "@mui/material";
-import { useAuth } from "../store/auth"
-// import gsap from 'gsap';
-import { useEffect, useRef } from "react";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination } from 'swiper/modules';
 // import Swiper and modules styles
@@ -23,10 +20,6 @@ import { Autoplay } from 'swiper/modules';
 
 
 const Home = () => {
-
-
-  const { isLoggedIn, user } = useAuth()
-  const swiperRef = useRef(null);
 
   return (
     <>
