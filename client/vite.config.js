@@ -2,6 +2,11 @@ import { defineConfig, transformWithEsbuild } from 'vite'
 import react from '@vitejs/plugin-react'
 
 export default defineConfig({
+    build: {
+        rollupOptions: {
+          external: ['react-dom/client'],
+        },
+      },
   plugins: [
     {
       name: 'treat-js-files-as-jsx',
