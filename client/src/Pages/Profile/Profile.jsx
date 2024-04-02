@@ -4,7 +4,7 @@ import { baseURL, changeProfileImage, getAllSavedPins } from "../../api";
 import { CircularProgress } from '@mui/material'
 import { useAuth } from "../../store/auth";
 import CreatePostPopup from "../../components/CreatePostPopup";
-import Modal from "@material-ui/core/Modal";
+import Modal from '@mui/material/Modal';
 import EditProfilePopup from "../../components/EditProfilePopup";
 
 const Profile = () => {

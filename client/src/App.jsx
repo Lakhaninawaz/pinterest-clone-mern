@@ -9,7 +9,7 @@ import Profile from './Pages/Profile/Profile'
 import { useAuth } from './store/auth'
 import SavedPins from './Pages/Pins/SavedPins'
 import PinsData from './Pages/Pins/PinsData'
-import Posts from './Pages/feed/Posts'
+import Posts from './Pages/Feed/Posts'
 import NotFound from './Pages/Not Found/NotFound'
 import CreatedPins from './Pages/Pins/CreatedPins'
 
