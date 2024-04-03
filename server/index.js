@@ -17,7 +17,7 @@ const cors = require("cors");
 // const { isAuthenticated } = require('./controller/user');
 
 var corsOption = {
-  origin: '*',
+  origin: 'http://localhost:5173',
   allowedHeaders: ['Content-Type', 'Authorization'],
   optionsSuccessStatus: 200 
 }
