@@ -10,6 +10,6 @@ export const setAuthToken = (token) =>{
     }
 }
 
-export const baseURL = import.meta.env.REACT_APP_BASE_URL || "http://www.localhost:3000";
+export const baseURL = import.meta.env.REACT_APP_BASE_URL
 
 export * from "./users";
