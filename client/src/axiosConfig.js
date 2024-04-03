@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const instance = axios.create({
-    baseURL:  import.meta.env.REACT_APP_BASE_URL
+    baseURL:  "https://pintrest-clone-mern-api.vercel.app"
 })
 
 export default instance;
