@@ -13,6 +13,9 @@ import Posts from './Pages/Feed/Posts'
 import NotFound from './Pages/Not Found/NotFound'
 import CreatedPins from './Pages/Pins/CreatedPins'
 
+import { inject } from '@vercel/analytics';
+ 
+inject({ mode:  'production' });
 
 function App() {
 
