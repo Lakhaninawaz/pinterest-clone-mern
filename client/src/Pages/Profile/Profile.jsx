@@ -81,6 +81,7 @@ const Profile = () => {
             setLoading(false);
         }
         if (user?.profileImage) {
+            console.log(baseURL);
             setImageUrl(`${baseURL}/images/uploads/${user.profileImage}`)
         }
     }, [user])

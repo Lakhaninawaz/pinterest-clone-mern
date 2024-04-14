@@ -10,6 +10,6 @@ export const setAuthToken = (token) =>{
     }
 }
 
-export const baseURL = import.meta.env.REACT_APP_BASE_URL
+export const baseURL = import.meta.env.VITE_API_KEY
 
 export * from "./users";

@@ -101,6 +101,8 @@ export const logOut = async () => {
 }
 
 export const changeProfileImage = async (file) => {
+    const token = localStorage.getItem("token")
+
     let formData = new FormData();
     formData.append('profileImage', file);
     // console.log(formData);
