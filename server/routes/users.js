@@ -9,9 +9,11 @@ router.post('/signup', signUp);
 router.post('/login', checkUserAuthenticate, signIn);
 router.get('/userdata', isAuthenticated, getUserData)
 router.get('/logout',isAuthenticated, logout);
-router.post('/fileupload', isAuthenticated, upload.single("profileImage"), fileUpload);
+// router.post('/fileupload', isAuthenticated, upload.single("profileImage"), fileUpload);
+router.post('/fileupload', isAuthenticated, fileUpload);
 router.put('/editProfile', isAuthenticated, editProfile);
-router.post('/createPost', isAuthenticated, upload.single("postImg"), createPost);
+// router.post('/createPost', isAuthenticated, upload.single("postImg"), createPost);
+router.post('/createPost', isAuthenticated, createPost);
 router.post('/savePost', isAuthenticated, savePost);
 router.post('/deSavePost', isAuthenticated, discardSavePost);
 router.get('/getPosts', isAuthenticated, getUserPosts);

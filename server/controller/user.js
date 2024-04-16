@@ -99,18 +99,20 @@ const logout = (req, res) => {
 
 const fileUpload = async (req, res) => {
     // console.log(req.useId);
-    console.log(req.file);
+    // console.log(req.body.base64);
     const user = await User.findOne({ _id: req.userId });
     if (!user) {
         return res.status(404).json({ message: "User not found" });
     }
 
     //check user have profileImage if have remove in /images/upload/tht string of profileImage
-    if (user.profileImage != null) {
-        fs.unlinkSync(`${__dirname}/../images/uploads/${user.profileImage}`);
-    }
+    // if (user.profileImage != null) {
+    //     fs.unlinkSync(`${__dirname}/../images/uploads/${user.profileImage}`);
+    // }
 
-    user.profileImage = req.file.filename;
+    // user.profileImage = req.file.filename;
+    user.profileImage = req.body.base64;
+
     await user.save();
 
     res.status(200).json({ message: "File Uploaded", user })
@@ -261,15 +263,14 @@ const createPost = async (req, res) => {
 
     // const 
 
-    const { title, description } = req.body;
-    const image = req.file.filename;
+    const { title, description, image } = req.body;
 
-    // console.log(title, description, image);
+    console.log(title, description, image);
 
     const post = await Post.create({
         title,
         description: description ? description : 'Description not provided',
-        image: req.file.filename,
+        image,
         user: user._id
     })
 
@@ -342,11 +343,11 @@ const deletePost = async (req, res) => {
     }
 
     //post image remove from directory
-    if (post.image !== null) {
-        // fs.unlinkSync(`${__dirname}/../images/uploads/${user.profileImage}`);
+    // if (post.image !== null) {
+    //     // fs.unlinkSync(`${__dirname}/../images/uploads/${user.profileImage}`);
 
-        fs.unlinkSync(`${__dirname}/../images/uploads/${post.image}`);
-    }
+    //     fs.unlinkSync(`${__dirname}/../images/uploads/${post.image}`);
+    // }
 
     //delete post of user in user.posts and delete post schema in post
 

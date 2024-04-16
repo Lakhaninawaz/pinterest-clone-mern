@@ -100,15 +100,15 @@ export const logOut = async () => {
     }
 }
 
-export const changeProfileImage = async (file) => {
+export const changeProfileImage = async (base64) => {
     const token = localStorage.getItem("token")
 
-    let formData = new FormData();
-    formData.append('profileImage', file);
+    // let formData = new FormData();
+    // formData.append('profileImage', file);
     // console.log(formData);
     try {
 
-        const response = await axios.post(`/users/fileupload`, formData , {
+        const response = await axios.post(`/users/fileupload`, base64 , {
             headers: { Authorization: token },
         });
 
@@ -342,11 +342,11 @@ export const editProfile = async (user) => {
 
 }
 
-export const createPost = async (formData) => {
+export const createPost = async (data) => {
     try {
         const token = localStorage.getItem("token")
-        console.log(formData);
-        const response = await axios.post(`/users/createPost`, formData, {
+        console.log(data);
+        const response = await axios.post(`/users/createPost`, data, {
             headers: { Authorization: token }
         });
 

@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unescaped-entities */
 import { Link } from 'react-router-dom'
-import { baseURL, getAllSavedPins } from '../../api'
+import { getAllSavedPins } from '../../api'
 import { CircularProgress } from '@mui/material'
 import { useEffect, useState } from 'react'
 
@@ -66,7 +66,7 @@ const SavedPins = () => {
                                     <Link key={i} to={`/savedPins/${post._id}`} post={post}>
                                     <div className="card w-52 h-full cursor-pointer">
                                         <div className="w-52 h-40 bg-gray-100 rounded-lg overflow-hidden">
-                                            <img className="w-full h-full object-cover" src={`${baseURL}/images/uploads/${post.image}`} alt="" />
+                                            <img className="w-full h-full object-cover" src={`${post.image}`} alt="" />
                                         </div>
                                         <h3 className="text-xl text-center font-semibold mt-3 cursor-pointer">{post.title}</h3>
                                     </div>

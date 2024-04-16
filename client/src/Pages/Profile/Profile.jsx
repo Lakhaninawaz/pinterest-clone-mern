@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom"
-import { baseURL, changeProfileImage, getAllSavedPins } from "../../api";
+import { changeProfileImage, getAllSavedPins } from "../../api";
 import { CircularProgress } from '@mui/material'
 import { useAuth } from "../../store/auth";
 import CreatePostPopup from "../../components/CreatePostPopup";
@@ -8,6 +8,7 @@ import Modal from '@mui/material/Modal';
 import EditProfilePopup from "../../components/EditProfilePopup";
 
 const Profile = () => {
+
     const [isOpen, setIsOpen] = useState(0);
 
 
@@ -36,13 +37,15 @@ const Profile = () => {
         e.preventDefault()
 
         const file = fileInputRef.current.files[0];
+        const base64 = await convertToBase64(file);
+        console.log(base64);
         // console.log(file);
         if (file) {
             // console.log("File selected!");
 
             // console.log(file);
 
-            const response = await changeProfileImage(file);
+            const response = await changeProfileImage(base64);
 
             if (response.status !== 200) {
                 setLoading(false)
@@ -51,7 +54,7 @@ const Profile = () => {
             } else {
                 // console.log(response.data.user.profileImage);
                 setLoading(false)
-                setImageUrl(`${baseURL}/images/uploads/${response.data.user.profileImage}`); // Update image URL from response data
+                setImageUrl(`${response.data.user.profileImage}`); // Update image URL from response data
                 // window.location.reload();
             }
         } else {
@@ -81,11 +84,19 @@ const Profile = () => {
             setLoading(false);
         }
         if (user?.profileImage) {
-            console.log(baseURL);
-            setImageUrl(`${baseURL}/images/uploads/${user.profileImage}`)
+            // setImageUrl(`${baseURL}/images/uploads/${user.profileImage}`)
+            setImageUrl(`${user.profileImage}`)
         }
     }, [user])
 
+    function convertToBase64(file) {
+        return new Promise((resolve, reject) => {
+            const fileReader = new FileReader();
+            fileReader.readAsDataURL(file);
+            fileReader.onload = () => resolve(fileReader.result);
+            fileReader.onerror = (err) => reject(err);
+        })
+    }
     return (
         <>
         {
@@ -97,7 +108,7 @@ const Profile = () => {
                 className="w-screen h-screen flex items-center justify-center bg-transparent"
             >
                 <div className="w-4/5 md:w-3/5 p-10 h-3/4 bg-[#ffffff70]">
-                <CreatePostPopup onClose={handleCloseModal}/>
+                <CreatePostPopup convert={convertToBase64} onClose={handleCloseModal}/>
           </div>
             </Modal>
         }
@@ -147,7 +158,7 @@ const Profile = () => {
                                 <Link to={"/createdPins"}>
                                     <div className="card cursor-pointer">
                                         <div className="w-52 h-40 bg-gray-100 rounded-lg overflow-hidden">
-                                            <img className="w-full h-full object-cover" src={`${baseURL}/images/uploads/${userPosts[0].image}`} alt="" />
+                                            <img className="w-full h-full object-cover" src={`${userPosts[0].image}`} alt="" />
                                         </div>
                                         {/* after:transition after:duration-400 after:ease-out after:transform after:h-[2px] after:w-full after:bg-black after:absolute after:-bottom-1 after:right-0 after:scale-x-0 hover:after:scale-x-100 after:origin-left */}
                                         <h3 className="text-xl font-semibold mt-3 cursor-pointer">Your Uploaded Pins</h3>
@@ -159,7 +170,7 @@ const Profile = () => {
                                 <Link to={"/savedPins"}>
                                     <div className="card cursor-pointer">
                                         <div className="w-52 h-40 bg-gray-100 rounded-lg overflow-hidden">
-                                            <img className="w-full h-full object-cover" src={`${baseURL}/images/uploads/${savedPost[0].image}`} alt="" />
+                                            <img className="w-full h-full object-cover" src={`${savedPost[0].image}`} alt="" />
                                         </div>
                                         {/* after:transition after:duration-400 after:ease-out after:transform after:h-[2px] after:w-full after:bg-black after:absolute after:-bottom-1 after:right-0 after:scale-x-0 hover:after:scale-x-100 after:origin-left */}
                                         <h3 className="text-xl font-semibold mt-3 cursor-pointer">All Saved Pins</h3>

@@ -3,7 +3,7 @@ import { useState, useRef } from 'react';
 import { CircularProgress } from '@mui/material'
 import { createPost } from '../api';
 
-const CreatePostPopup = ({onClose}) => {
+const CreatePostPopup = ({onClose, convert}) => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [loading, setLoading] = useState(null);
   const [error, setError] = useState('');
@@ -16,12 +16,12 @@ const CreatePostPopup = ({onClose}) => {
 
     const title = titleRef.current.value;
     const description = descriptionRef.current.value;
-console.log(title, description);
+console.log(title, description, selectedFile);
     // Implement form data preparation and POST request logic here
-    const formData = new FormData();
-    formData.append('postImg', selectedFile);
-    formData.append('title', title);
-    formData.append('description', description);
+    // const formData = new FormData();
+    // formData.append('postImg', selectedFile);
+    // formData.append('title', title);
+    // formData.append('description', description);
 
     if(selectedFile === null){
       setError("Please select an image to upload!");
@@ -33,8 +33,9 @@ console.log(title, description);
       return;
     }
     try {
-      console.log(formData);
-      const response = await createPost(formData)
+      const base64 = await convert(selectedFile);
+      console.log(base64);
+      const response = await createPost({title, description, image: base64})
       console.log(response);
       if (response.status === 200) {
         setLoading(false)

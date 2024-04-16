@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom"
-import { baseURL, deSavedPost, deletePostById, getPostData, savePost } from "../../api"
+import { deSavedPost, deletePostById, getPostData, savePost } from "../../api"
 import { useEffect, useState } from "react"
 import { CircularProgress } from "@mui/material"
 import { useAuth } from "../../store/auth"
@@ -131,7 +131,7 @@ const PinsData = () => {
       <div className="flex flex-col md:flex-row h-full items-center justify-center">
         <div className=" px-10 left w-full h-[60vmax] md:h-[90vh] md:w-[50vw] flex items-center justify-center bg-gray-500">
           <img
-            src={`${baseURL}/images/uploads/${post.image}`} // Assuming image path format
+            src={`${post.image}`} // Assuming image path format
             alt={post.title}
             className="object-cover rounded-2xl"
           />
