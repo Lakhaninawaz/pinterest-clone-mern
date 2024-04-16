@@ -19,7 +19,8 @@ const cors = require("cors");
 var corsOption = {
   origin: '*',
   allowedHeaders: ['Content-Type', 'Authorization'],
-  optionsSuccessStatus: 200 
+  optionsSuccessStatus: 200 ,
+  methods: 'GET, POST, DELETE, PUT, PATCH',
 }
 
 // initializingPassport(passport)
@@ -54,7 +55,7 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
 conn().then(()=>{
-    app.listen(8000, ()=>{
+    app.listen(3000, ()=>{
         console.log("Port running in localhost:3000");
     })
 })
