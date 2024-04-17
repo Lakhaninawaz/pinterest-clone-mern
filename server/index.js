@@ -17,7 +17,7 @@ const cors = require("cors");
 // const { isAuthenticated } = require('./controller/user');
 
 var corsOption = {
-  origin: '*',
+  origin: 'https://pinterest-clone-mern.vercel.app/',
   allowedHeaders: ['Content-Type', 'Authorization'],
   optionsSuccessStatus: 200 ,
   methods: 'GET, POST, DELETE, PUT, PATCH',
