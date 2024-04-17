@@ -108,7 +108,7 @@ export const changeProfileImage = async (base64) => {
     // console.log(formData);
     try {
 
-        const response = await axios.post(`/users/fileupload`, base64 , {
+        const response = await axios.post(`/users/fileupload`, {base64} , {
             headers: { Authorization: token },
         });
 
