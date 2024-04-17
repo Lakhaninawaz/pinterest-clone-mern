@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom"
-import { baseURL, getAllPosts } from "../../api";
+import { getAllPosts } from "../../api";
 import { CircularProgress } from '@mui/material'
 import { useAuth } from "../../store/auth";
 import Swal from "sweetalert2";
@@ -84,7 +84,7 @@ if(allPosts == null){
                                     <Link key={i} to={`/posts/${post._id}`} post={post}>
                                     <div className="card w-52 h-full cursor-pointer">
                                         <div className="w-52 h-40 bg-gray-100 rounded-lg overflow-hidden">
-                                            <img className="w-full h-full object-cover" src={`${baseURL}/images/uploads/${post.image}`} alt="" />
+                                            <img className="w-full h-full object-cover" src={`${post.image}`} alt="" />
                                         </div>
                                         <h3 className="text-xl text-center font-semibold mt-3 cursor-pointer">{post.title}</h3>
                                     </div>
