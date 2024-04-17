@@ -62,11 +62,11 @@ const Profile = () => {
         }
     }
 
-    const getSavePosts = async()=>{
+    const getSavePosts = async () => {
         try {
             setLoading(true)
             const response = await getAllSavedPins();
-            
+
             // console.log(response);
             setSavedPost(response);
             setLoading(false)
@@ -97,34 +97,45 @@ const Profile = () => {
             fileReader.onerror = (err) => reject(err);
         })
     }
+
+    if (loading) {
+        return (
+            <>
+                <div className="h-screen opacity-70 flex justify-center items-center">
+                    <CircularProgress style={{ color: 'black' }} />
+                </div>
+            </>
+        )
+    }
+
     return (
         <>
-        {
-            isOpen === 1 &&
+            {
+                isOpen === 1 &&
 
-            <Modal
-                onClose={()=>handleCloseModal()}
-                open={isOpen === 1}
-                className="w-screen h-screen flex items-center justify-center bg-transparent"
-            >
-                <div className="w-4/5 md:w-3/5 p-10 h-3/4 bg-[#ffffff70]">
-                <CreatePostPopup convert={convertToBase64} onClose={handleCloseModal}/>
-          </div>
-            </Modal>
-        }
-        {
-            isOpen === 2 &&
+                <Modal
+                    onClose={() => handleCloseModal()}
+                    open={isOpen === 1}
+                    className="w-screen h-screen flex items-center justify-center bg-transparent"
+                >
+                    <div className="w-4/5 md:w-3/5 p-10 h-3/4 bg-[#ffffff70]">
+                        <CreatePostPopup convert={convertToBase64} onClose={handleCloseModal} />
+                    </div>
+                </Modal>
+            }
+            {
+                isOpen === 2 &&
 
-            <Modal
-                onClose={()=>handleCloseModal()}
-                open={isOpen === 2}
-                className="w-screen h-screen flex items-center justify-center bg-transparent"
-            >
-                <div className="w-4/5 sm:w-3/5 md:w-2/5 p-7 h-3/5 bg-[#ffffff70]">
-                <EditProfilePopup onClose={handleCloseModal}/>
-          </div>
-            </Modal>
-        }
+                <Modal
+                    onClose={() => handleCloseModal()}
+                    open={isOpen === 2}
+                    className="w-screen h-screen flex items-center justify-center bg-transparent"
+                >
+                    <div className="w-4/5 sm:w-3/5 md:w-2/5 p-7 h-3/5 bg-[#ffffff70]">
+                        <EditProfilePopup onClose={handleCloseModal} />
+                    </div>
+                </Modal>
+            }
             {user ?
                 <>
                     <div className="profile w-full min-h-screen bg-white pt-1">
