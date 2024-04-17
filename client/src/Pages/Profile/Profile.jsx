@@ -135,7 +135,7 @@ const Profile = () => {
                     </div>
                 </Modal>
             }
-            {user ?
+            {user && savedPost ?
                 <>
                     <div className="profile w-full min-h-screen bg-white pt-1">
                         <form hidden onChange={handleSubmit}>
