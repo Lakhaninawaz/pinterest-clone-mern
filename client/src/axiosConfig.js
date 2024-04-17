@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const instance = axios.create({
-    baseURL:  "https://pintrest-clone-mern-03qh.onrender.com"
+    baseURL:  import.meta.env.VITE_API_KEY
 })
 
 export default instance;
