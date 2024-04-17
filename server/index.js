@@ -46,7 +46,6 @@ app.use(express.json());
 
 app.use(cors(corsOption))
 
-app.use('/images/uploads', express.static('images/uploads/'))
 
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());

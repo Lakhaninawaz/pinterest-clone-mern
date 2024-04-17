@@ -16,7 +16,7 @@ const CreatePostPopup = ({onClose, convert}) => {
 
     const title = titleRef.current.value;
     const description = descriptionRef.current.value;
-console.log(title, description, selectedFile);
+// console.log(title, description, selectedFile);
     // Implement form data preparation and POST request logic here
     // const formData = new FormData();
     // formData.append('postImg', selectedFile);
@@ -34,9 +34,9 @@ console.log(title, description, selectedFile);
     }
     try {
       const base64 = await convert(selectedFile);
-      console.log(base64);
+      // console.log(base64);
       const response = await createPost({title, description, image: base64})
-      console.log(response);
+      // console.log(response);
       if (response.status === 200) {
         setLoading(false)
         console.log('Post created successfully!');

@@ -69,7 +69,7 @@ const navList = () => {
 
   const Logout = async ()=>{
     const response = await logOut();
-    console.log(response);
+    // console.log(response);
     if (response.status === 200) {
       removetokenInLS();
       navigate("/");

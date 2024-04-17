@@ -37,7 +37,7 @@ const PinsData = () => {
     try {
       const response = await savePost(post._id);
 
-      console.log(response);
+      // console.log(response);
       if (response.status === 200) {
         // console.log(response.data);
         setSaved(true);
@@ -94,7 +94,7 @@ const PinsData = () => {
     try {
       const response = await deletePostById(id)
 
-      console.log(response);
+      // console.log(response);
       if (response.status === 200) {
         // console.log(response.data);
         setPost(response.data);

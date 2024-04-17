@@ -28,7 +28,7 @@ export const signupUser = async (user) => {
             },
         })
 
-        console.log(response);
+        // console.log(response);
         return response;
     } catch (err) {
         console.log("signup error", err);
@@ -70,7 +70,7 @@ export const signIn = async (user) => {
 
 export const logOut = async () => {
     try {
-        console.log(token);
+        // console.log(token);
         const response = await axios.get(`/users/logout`,
             {
                 headers: { Authorization: `${token}` }
@@ -176,7 +176,7 @@ export const getAllSavedPins = async () => {
         const response = await axios.get(`/users/getSavedPosts`, {
             headers: { Authorization: token }
         });
-        console.log(response);
+        // console.log(response);
         if (response)
             return response.data.boards
     } catch (error) {
@@ -218,7 +218,7 @@ export const getPostData = async (id) => {
 }
 
 export const deletePostById = async (id) => {
-    console.log(id);
+    // console.log(id);
     try {
         //here i get current user data if status code is 40x so axios not show in browser console
         const response = await axios.delete(`/users/deletePost/${id}`, {
@@ -334,7 +334,7 @@ export const editProfile = async (user) => {
             },
         })
 
-        console.log(response);
+        // console.log(response);
         return response;
     } catch (err) {
         // console.log("edit Profile error", err);
@@ -346,7 +346,7 @@ export const editProfile = async (user) => {
 export const createPost = async (data) => {
     try {
         const token = localStorage.getItem("token")
-        console.log(data);
+        // console.log(data);
         const response = await axios.post(`/users/createPost`, data, {
             headers: { Authorization: token }
         });
@@ -365,7 +365,7 @@ export const createPost = async (data) => {
             },
         })
 
-        console.log(response);
+        // console.log(response);
 
         return response;
 

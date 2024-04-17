@@ -38,7 +38,7 @@ const Profile = () => {
 
         const file = fileInputRef.current.files[0];
         const base64 = await convertToBase64(file);
-        console.log(base64);
+        // console.log(base64);
         // console.log(file);
         if (file) {
             // console.log("File selected!");
@@ -163,7 +163,7 @@ const Profile = () => {
                             <button onClick={handleOpenModal1} className="text-white px-7 py-2 mt-2 bg-red-500 rounded-lg text-sm font-semibold ">Add New Post</button>
                         </div>
                         <div className="cards flex flex-wrap items-center justify-center md:items-start md:justify-start gap-10 px-10 mt-10">
-                            {console.log(userPosts)}
+                            {/* {console.log(userPosts)} */}
                             {userPosts?.length > 0 &&
                                 <Link to={"/createdPins"}>
                                     <div className="card cursor-pointer">

@@ -2,7 +2,6 @@ const express = require('express');
 const router = express();
 
 const { signIn, signUp, logout, fileUpload, getUserData, editProfile, isAuthenticated, createPost, getUserPosts, getPostData, deletePost, getAllPosts, checkUserAuthenticate, savePost, discardSavePost, getSavedPost } = require('../controller/user.js');
-const upload = require('../middleware/upload.js');
 
 /* users router. */
 router.post('/signup', signUp);

@@ -63,7 +63,7 @@ export const AuthProvider = ({ children }) => {
       setUserPosts(response.data.user.posts);
       } 
        else{
-        console.log(response);
+        // console.log(response);
         Swal.fire({
           icon: "error",
           text: response.response.data.message,
@@ -98,7 +98,7 @@ export const AuthProvider = ({ children }) => {
         setUserPosts(response.data);
       } 
        else{
-        console.log(response);
+        // console.log(response);
         Swal.fire({
           icon: "error",
           text: response.response.data.message,

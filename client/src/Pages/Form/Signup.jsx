@@ -27,8 +27,8 @@ const onSignup = async (event) => {
     return setError("Please enter a valid e-mail address.")
   } else {
     const response = await signupUser(user);
-    console.log(response);
-    console.log(response.status);
+    // console.log(response);
+    // console.log(response.status);
 
     if (response.status !== 200) {
       setError(response.data.message)

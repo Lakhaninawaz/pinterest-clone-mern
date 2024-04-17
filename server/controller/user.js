@@ -58,7 +58,7 @@ const signIn = async (req, res) => {
         //     }
         // console.log(passportUser);
         const user = req.user;
-        console.log(user);
+        // console.log(user);
         if (user) {
             //create token data
             const tokenData = {
@@ -169,7 +169,7 @@ const getSavedPost = async (req, res) => {
 }
 
 const savePost = async (req, res) => {
-    console.log(req.user);
+    // console.log(req.user);
     let { id } = req.body;
     //check username empty if empty so donot change username 
     // console.log(username, name, contact);
@@ -193,7 +193,7 @@ const savePost = async (req, res) => {
 }
 
 const discardSavePost = async (req, res) => {
-    console.log(req.user);
+    // console.log(req.user);
     let { id } = req.body;
     //check username empty if empty so donot change username 
     // console.log(username, name, contact);
@@ -218,7 +218,7 @@ const discardSavePost = async (req, res) => {
 }
 
 const editProfile = async (req, res) => {
-    console.log(req.user);
+    // console.log(req.user);
     let { username, name, contact } = req.body;
     //check username empty if empty so donot change username 
     // console.log(username, name, contact);
@@ -265,7 +265,7 @@ const createPost = async (req, res) => {
 
     const { title, description, image } = req.body;
 
-    console.log(title, description, image);
+    // console.log(title, description, image);
 
     const post = await Post.create({
         title,

@@ -14,7 +14,7 @@ const SavedPins = () => {
             setLoading(true)
             const response = await getAllSavedPins()
 
-            console.log(response);
+            // console.log(response);
             if(response){
                 if (response.length === 0) {
                     setSavedPins(null);

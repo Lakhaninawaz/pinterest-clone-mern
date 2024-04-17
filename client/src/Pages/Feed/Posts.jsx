@@ -16,7 +16,7 @@ const Posts = () => {
     const getPosts = async ()=>{
       try {
         const response = await getAllPosts();
-        console.log(response);
+        // console.log(response);
         if (response.status === 200) {
             if(response.data.posts.length === 0){
                 setAllPosts(null);
