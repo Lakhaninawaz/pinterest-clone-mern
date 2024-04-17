@@ -106,6 +106,7 @@ export const changeProfileImage = async (base64) => {
     // let formData = new FormData();
     // formData.append('profileImage', file);
     // console.log(formData);
+    console.log(base64);
     try {
 
         const response = await axios.post(`/users/fileupload`, {base64} , {
