@@ -74,8 +74,7 @@ $ npm start // run it locally
 # Screenshots of this project
 
 User visit public and Home page
-![User visit public and Home page]
-    <img src="https://ibb.co/FJd3sGj" alt="Home Page">
+![User visit public and Home page](https://drive.google.com/file/d/1LTBCI87vqtb2jTADC4HpkU2wt4Fa36pE/view?usp=sharing)
 
 User can sign in or sign up
 ![User can sign in or sign up](http://i.imgur.com/rrmbU5I.png)
