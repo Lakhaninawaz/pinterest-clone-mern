@@ -5,7 +5,8 @@ Pinterest Clone
 MongoDB, Expressjs, React, Nodejs
 </p>
 
->Live Link: [](https://pinterest-clone-mern.vercel.app/)
+Live Link: [Pinterest Clone MERN](https://pinterest-clone-mern.vercel.app/)
+
 > Pinterest Clone: A MERN Stack Implementation
 
 This project is a full-stack implementation of a Pinterest clone, built with the MERN stack (MongoDB, Express.js, React/Redux, Node.js).
