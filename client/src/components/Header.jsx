@@ -88,7 +88,7 @@ const navList = () => {
                 <div className="w-full h-full md:w-fith-full flex items-center justify-between">
                     <Link to="/" className="text-2xl font-semibold text-gray-800">
                     {/* <img className='w-56 h-22' src="https://download.logo.wine/logo/Pinterest/Pinterest-Logo.wine.png" alt="" /> */}
-                    <h1 className='w-56 h-22 ml-5 md:ml-10 lg:ml-16'>PinToRest</h1>
+                    <h1 className='w-56 h-22 ml-5 md:ml-10 lg:ml-16 text-red-500'>PinToRest</h1>
                     </Link>
                     <button
                         onClick={toggleNav}

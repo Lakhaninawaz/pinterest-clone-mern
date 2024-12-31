@@ -99,8 +99,12 @@ const Home = () => {
                     <div className="w-52 h-40 bg-gray-100 rounded-lg overflow-hidden">
                       <img
                         className="w-full h-full object-cover"
-                        src="https://source.unsplash.com/random/?city,night"
-                        alt="img" />
+                        src="https://picsum.photos/208/160?random=1"
+                        alt="img"
+                        loading="lazy"
+                        onError={(e) => {
+                          e.target.src = "https://via.placeholder.com/208x160?text=Image+Not+Found";
+                        }} />
                     </div>
                   </div>
                 </div>
@@ -112,10 +116,12 @@ const Home = () => {
                     <div className="w-52 h-60 top-0 bg-gray-100 rounded-lg overflow-hidden">
                       <img
                         className="w-full h-full object-cover"
-                        src="https://source.unsplash.com/random/?creative"
+                        src="https://picsum.photos/208/240?random=2"
                         alt="img"
-                        loading={<CircularProgress/>} 
-                        />
+                        loading="lazy"
+                        onError={(e) => {
+                          e.target.src = "https://via.placeholder.com/208x240?text=Image+Not+Found";
+                        }} />
                     </div>
                   </div>
                 </div>
@@ -127,8 +133,12 @@ const Home = () => {
                     <div className="w-52 h-40 bg-gray-100 rounded-lg overflow-hidden">
                       <img
                         className="w-full h-full object-cover"
-                        src="https://source.unsplash.com/random/?think"
-                        alt="img" />
+                        src="https://picsum.photos/208/160?random=3"
+                        alt="img"
+                        loading="lazy"
+                        onError={(e) => {
+                          e.target.src = "https://via.placeholder.com/208x160?text=Image+Not+Found";
+                        }} />
                     </div>
                   </div>
                 </div>
@@ -140,8 +150,12 @@ const Home = () => {
                     <div className="w-52 h-40 top-0 bg-gray-100 rounded-lg overflow-hidden">
                       <img
                         className="w-full h-full object-cover"
-                        src="https://source.unsplash.com/random/?city,night"
-                        alt="img" />
+                        src="https://picsum.photos/208/160?random=4"
+                        alt="img"
+                        loading="lazy"
+                        onError={(e) => {
+                          e.target.src = "https://via.placeholder.com/208x160?text=Image+Not+Found";
+                        }} />
                     </div>
                   </div>
                 </div>
@@ -153,8 +167,12 @@ const Home = () => {
                     <div className="w-52 h-60 bg-gray-100 rounded-lg overflow-hidden">
                       <img
                         className="w-full h-full object-cover"
-                        src="https://source.unsplash.com/random/?creative"
-                        alt="img" />
+                        src="https://picsum.photos/208/240?random=5"
+                        alt="img"
+                        loading="lazy"
+                        onError={(e) => {
+                          e.target.src = "https://via.placeholder.com/208x240?text=Image+Not+Found";
+                        }} />
                     </div>
                   </div>
                 </div>
@@ -166,8 +184,12 @@ const Home = () => {
                     <div className="w-52 h-40 top-0 bg-gray-100 rounded-lg overflow-hidden">
                       <img
                         className="w-full h-full object-cover"
-                        src="https://source.unsplash.com/random/?think"
-                        alt="img" />
+                        src="https://picsum.photos/208/160?random=6"
+                        alt="img"
+                        loading="lazy"
+                        onError={(e) => {
+                          e.target.src = "https://via.placeholder.com/208x160?text=Image+Not+Found";
+                        }} />
                     </div>
                   </div>
                 </div>
@@ -179,8 +201,12 @@ const Home = () => {
                     <div className="w-52 h-40 bg-gray-100 rounded-lg overflow-hidden">
                       <img
                         className="w-full h-full object-cover"
-                        src="https://source.unsplash.com/random/?city,night"
-                        alt="img" />
+                        src="https://picsum.photos/208/160?random=7"
+                        alt="img"
+                        loading="lazy"
+                        onError={(e) => {
+                          e.target.src = "https://via.placeholder.com/208x160?text=Image+Not+Found";
+                        }} />
                     </div>
                   </div>
                 </div>
@@ -192,8 +218,12 @@ const Home = () => {
                     <div className="w-52 h-60 top-0 bg-gray-100 rounded-lg overflow-hidden">
                       <img
                         className="w-full h-full object-cover"
-                        src="https://source.unsplash.com/random/?creative"
-                        alt="img" />
+                        src="https://picsum.photos/208/240?random=8"
+                        alt="img"
+                        loading="lazy"
+                        onError={(e) => {
+                          e.target.src = "https://via.placeholder.com/208x240?text=Image+Not+Found";
+                        }} />
                     </div>
                   </div>
                 </div>
