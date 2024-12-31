@@ -87,7 +87,8 @@ const navList = () => {
 <header className="w-full h-20 object-cover flex items-center justify-between flex-col md:flex-row">
                 <div className="w-full h-full md:w-fith-full flex items-center justify-between">
                     <Link to="/" className="text-2xl font-semibold text-gray-800">
-                    <img className='w-56 h-22' src="https://download.logo.wine/logo/Pinterest/Pinterest-Logo.wine.png" alt="" />
+                    {/* <img className='w-56 h-22' src="https://download.logo.wine/logo/Pinterest/Pinterest-Logo.wine.png" alt="" /> */}
+                    <h1 classname='w-56 h-22'>PinToRest</h1>
                     </Link>
                     <button
                         onClick={toggleNav}
