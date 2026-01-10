@@ -1,8 +1,8 @@
 import axios from "../axiosConfig";
 import Swal from "sweetalert2"
 
-const token = localStorage.getItem('token')
-// console.log(token);
+// Always read the latest token to avoid using a stale value after login/logout
+const getToken = () => localStorage.getItem('token');
 
 export const signupUser = async (user) => {
 
@@ -70,12 +70,9 @@ export const signIn = async (user) => {
 
 export const logOut = async () => {
     try {
-        // console.log(token);
-        const response = await axios.get(`/users/logout`,
-            {
-                headers: { Authorization: `${token}` }
-            }
-        );
+        const response = await axios.get(`/users/logout`, {
+            headers: { Authorization: getToken() }
+        });
 
         // console.log(response);
 
@@ -159,7 +156,7 @@ export const getUserPosts = async () => {
     try {
         //here i get current user data if status code is 40x so axios not show in browser console
         const response = await axios.get(`/users/getPosts`, {
-            headers: { Authorization: token }
+            headers: { Authorization: getToken() }
         });
         if (response)
             return response
@@ -222,7 +219,7 @@ export const deletePostById = async (id) => {
     try {
         //here i get current user data if status code is 40x so axios not show in browser console
         const response = await axios.delete(`/users/deletePost/${id}`, {
-            headers: { Authorization: token }
+            headers: { Authorization: getToken() }
         });
         if (response){
             Swal.fire({
@@ -317,7 +314,7 @@ export const editProfile = async (user) => {
             name: user.name,
             contact: user.contact
         }, {
-            headers: { Authorization: token }
+            headers: { Authorization: getToken() }
         });
 
         Swal.fire({
@@ -374,4 +371,17 @@ export const createPost = async (data) => {
         return (err?.response || "post creation failed!");
     }
 
+}
+
+export const getPublicUserProfile = async (username) => {
+    try {
+        const token = localStorage.getItem("token");
+        const response = await axios.get(`/users/profile/${username}`, {
+            headers: { Authorization: token }
+        });
+        return response;
+    } catch (error) {
+        console.log(error);
+        return error;
+    }
 }

@@ -1,7 +1,7 @@
 const express = require('express');
-const router = express();
+const router = express.Router();
 
-const { signIn, signUp, logout, fileUpload, getUserData, editProfile, isAuthenticated, createPost, getUserPosts, getPostData, deletePost, getAllPosts, checkUserAuthenticate, savePost, discardSavePost, getSavedPost } = require('../controller/user.js');
+const { signIn, signUp, logout, fileUpload, getUserData, editProfile, isAuthenticated, createPost, getUserPosts, getPostData, deletePost, getAllPosts, checkUserAuthenticate, savePost, discardSavePost, getSavedPost, getPublicUserProfile } = require('../controller/user.js');
 
 /* users router. */
 router.post('/signup', signUp);
@@ -20,5 +20,6 @@ router.get('/getSavedPosts', isAuthenticated, getSavedPost);
 router.delete('/deletePost/:cardid', isAuthenticated, deletePost);
 router.get('/getPost/:cardid', isAuthenticated, getPostData);
 router.get('/getAllPosts', isAuthenticated, getAllPosts);
+router.get('/profile/:username', isAuthenticated, getPublicUserProfile);
 
 module.exports = router;

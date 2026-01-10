@@ -1,6 +1,5 @@
 const mongoose = require("mongoose")
 
-const plm = require('passport-local-mongoose');
 const jwt = require('jsonwebtoken')
 
 const userSchema = mongoose.Schema({
@@ -42,7 +41,7 @@ const userSchema = mongoose.Schema({
     ]
 })
 
-userSchema.plugin(plm);
+
 
 const User = mongoose.model('user', userSchema);
 module.exports = User;

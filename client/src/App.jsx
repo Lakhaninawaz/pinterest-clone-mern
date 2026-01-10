@@ -1,11 +1,13 @@
 import './App.css'
+import PropTypes from 'prop-types'
 import Footer from './components/Footer'
 import Header from './components/Header'
 import Home from './components/Home'
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, Navigate } from 'react-router-dom'
 import Login from './Pages/Form/Login'
 import Signup from './Pages/Form/Signup'
 import Profile from './Pages/Profile/Profile'
+import PublicProfile from './Pages/Profile/PublicProfile'
 import { useAuth } from './store/auth'
 import SavedPins from './Pages/Pins/SavedPins'
 import PinsData from './Pages/Pins/PinsData'
@@ -21,24 +23,44 @@ function App() {
 
   const { isLoggedIn } = useAuth();
 
+  // Route guards
+  const ProtectedRoute = ({ children }) => {
+    return isLoggedIn ? children : <Navigate to="/login" replace />;
+  };
+
+  const PublicOnlyRoute = ({ children }) => {
+    return isLoggedIn ? <Navigate to="/" replace /> : children;
+  };
+
+  ProtectedRoute.propTypes = {
+    children: PropTypes.node
+  };
+
+  PublicOnlyRoute.propTypes = {
+    children: PropTypes.node
+  };
+
   return (
     <>
       <Header />
 
       <Routes>
         <Route path='/' element={<Home />} />
-        <>
-          <Route path='/profile' element={isLoggedIn ? <Profile /> : <Login />} />
-          <Route path='/signup' element={!isLoggedIn ? <Signup /> : <Home/>} />
-          <Route path='/login' element={!isLoggedIn ? <Login /> : <Home/>} />
-          <Route path='/createdPins' element={isLoggedIn ? <CreatedPins /> : <Login />} />
-          <Route path='/createdPins/:id' element={isLoggedIn ? <PinsData /> : <Login />} />
-          <Route path='/savedPins' element={isLoggedIn ? <SavedPins /> : <Login />} />
-          <Route path='/savedPins/:id' element={isLoggedIn ? <PinsData /> : <Login />} />
-          <Route path='/posts' element={isLoggedIn ? <Posts /> : <Login />} />
-          <Route path='/posts/:id' element={isLoggedIn ? <PinsData /> : <Login />} />
+        
+        {/* Public-only routes redirect to home when logged in */}
+        <Route path='/login' element={<PublicOnlyRoute><Login /></PublicOnlyRoute>} />
+        <Route path='/signup' element={<PublicOnlyRoute><Signup /></PublicOnlyRoute>} />
 
-        </>
+        {/* Protected routes redirect to login when not authenticated */}
+        <Route path='/profile' element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+        <Route path='/profile/:username' element={<ProtectedRoute><PublicProfile /></ProtectedRoute>} />
+        <Route path='/createdPins' element={<ProtectedRoute><CreatedPins /></ProtectedRoute>} />
+        <Route path='/createdPins/:id' element={<ProtectedRoute><PinsData /></ProtectedRoute>} />
+        <Route path='/savedPins' element={<ProtectedRoute><SavedPins /></ProtectedRoute>} />
+        <Route path='/savedPins/:id' element={<ProtectedRoute><PinsData /></ProtectedRoute>} />
+        <Route path='/posts' element={<ProtectedRoute><Posts /></ProtectedRoute>} />
+        <Route path='/posts/:id' element={<ProtectedRoute><PinsData /></ProtectedRoute>} />
+
         <Route path='/*' element={<NotFound/>}/>
       </Routes>
 

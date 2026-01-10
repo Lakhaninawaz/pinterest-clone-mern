@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom"
+import { Link, useNavigate, useParams } from "react-router-dom"
 import { deSavedPost, deletePostById, getPostData, savePost } from "../../api"
 import { useEffect, useState } from "react"
 import { CircularProgress } from "@mui/material"
@@ -79,13 +79,11 @@ const PinsData = () => {
 
   useEffect(() => {
     if (!post) {
-      // console.log(user.boards?.includes(id) ? true : false);
-      // setSaved(user.boards?.includes(id) ? true : false)
       postData();
     } else {
-      // setSaved(user.boards?.includes(id) ? true : false)
       setLoading(false)
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const deletePost = async () => {
@@ -119,37 +117,79 @@ const PinsData = () => {
   // { console.log(post) }
   return (
     post ? <>
-      {/* <div className="p-4 bg-white rounded-lg shadow-md">
-      <a href={`/post/${post._id}`}> {/* Link to full post details
-
-      </a>
-      <div className="p-4 flex flex-col space-y-2">
-        
-        </div>
-      </div>
-    </div> */}
-      <div className="flex flex-col md:flex-row h-full items-center justify-center">
-        <div className=" px-10 left w-full h-[60vmax] md:h-[90vh] md:w-[50vw] flex items-center justify-center bg-gray-500">
-          <img
-            src={`${post.image}`} // Assuming image path format
-            alt={post.title}
-            className="object-cover rounded-2xl"
-          />
-        </div>
-        <div className="right px-5 w-full md:w-[50vw] h-full pt-5 text-start  ">
-          <h1 className="text-[3vmax] font-medium text-gray-900">Title : <span className="hover:underline">{post.title}</span></h1>
-          <p className="text-gray-600 text-lg"><span className="font-medium">Description:</span> {post.description}</p>
-          <p className="text-gray-600 text-lg mb-3"><span className="font-medium">By:</span> {post.user.username} {post.user.username === user?.username ? "(you)" : ""} </p>
-          {
-            post.user?.username === user?.username &&         
-          <i onClick={deletePost} className="cursor-pointer text-xl ri-delete-bin-line"></i>
-}
-{/* {console.log(saved)} */}
-{
-  saved ? 
-  <i onClick={discardSavedPost} className="cursor-pointer ml-1 ri-bookmark-fill"></i>:
-  <i onClick={savedPost} className="cursor-pointer ml-1 ri-bookmark-line"></i>
-}
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-8">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="bg-white rounded-3xl shadow-2xl overflow-hidden">
+            <div className="flex flex-col lg:flex-row">
+              {/* Image Section */}
+              <div className="lg:w-1/2 bg-gray-900 flex items-center justify-center p-8">
+                <img
+                  src={`${post.image}`}
+                  alt={post.title}
+                  className="w-full h-auto max-h-[600px] object-contain rounded-2xl shadow-2xl"
+                />
+              </div>
+              
+              {/* Content Section */}
+              <div className="lg:w-1/2 p-8 lg:p-12 flex flex-col">
+                <div className="flex-grow">
+                  <h1 className="text-4xl font-bold text-gray-900 mb-6">{post.title}</h1>
+                  
+                  <div className="mb-6">
+                    <p className="text-gray-600 text-lg leading-relaxed">{post.description}</p>
+                  </div>
+                  
+                  {/* Author Info */}
+                  <div className="flex items-center mb-8 p-4 bg-gray-50 rounded-xl">
+                    <div className="w-12 h-12 bg-gradient-to-br from-red-400 to-red-600 rounded-full flex items-center justify-center text-white font-bold text-xl mr-4">
+                      {post.user.username.charAt(0).toUpperCase()}
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-500">Posted by</p>
+                      {post.user.username === user?.username ? (
+                        <span className="text-gray-900 font-semibold">{post.user.username} (you)</span>
+                      ) : (
+                        <Link to={`/profile/${post.user.username}`} className="text-red-600 hover:text-red-700 font-semibold transition-colors">
+                          {post.user.username}
+                        </Link>
+                      )}
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Action Buttons */}
+                <div className="flex items-center gap-4 pt-6 border-t border-gray-200">
+                  {post.user?.username === user?.username && (
+                    <button 
+                      onClick={deletePost}
+                      className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-full font-semibold hover:from-red-600 hover:to-red-700 transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl"
+                    >
+                      <i className="ri-delete-bin-line text-xl"></i>
+                      Delete
+                    </button>
+                  )}
+                  
+                  {saved ? (
+                    <button 
+                      onClick={discardSavedPost}
+                      className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-gray-700 to-gray-800 text-white rounded-full font-semibold hover:from-gray-800 hover:to-gray-900 transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl"
+                    >
+                      <i className="ri-bookmark-fill text-xl"></i>
+                      Saved
+                    </button>
+                  ) : (
+                    <button 
+                      onClick={savedPost}
+                      className="flex items-center gap-2 px-6 py-3 bg-white border-2 border-red-500 text-red-500 rounded-full font-semibold hover:bg-red-50 transform hover:scale-105 transition-all duration-200 shadow-md hover:shadow-lg"
+                    >
+                      <i className="ri-bookmark-line text-xl"></i>
+                      Save
+                    </button>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </> : <>

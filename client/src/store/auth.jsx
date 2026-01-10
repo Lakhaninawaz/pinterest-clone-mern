@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
-import { createContext, useState, useEffect, useContext } from 'react';
+/* eslint-disable react-refresh/only-export-components */
+import { createContext, useState, useEffect, useContext, useCallback } from 'react';
 import { getCurrentUser, getUserPosts } from '../api';
 import Swal from 'sweetalert2';
 
@@ -52,7 +53,7 @@ export const AuthProvider = ({ children }) => {
     setUserPosts(null)
   }
 
-  const currentUser = async () => {
+  const currentUser = useCallback(async () => {
     try {
       const response = await getCurrentUser();
 
@@ -85,7 +86,7 @@ export const AuthProvider = ({ children }) => {
     } catch (error) {
       console.log(error);
     }
-  }
+  }, [])
 
   const getPosts = async () => {
     try {
@@ -131,7 +132,7 @@ export const AuthProvider = ({ children }) => {
     // if (isLoggedIn && token) {
       currentUser()
     }
-  }, [user, isLoggedIn]);
+  }, [user, isLoggedIn, currentUser]);
   
 
   const contextValue = {
@@ -143,7 +144,9 @@ export const AuthProvider = ({ children }) => {
     storetokenInLS,
     setUserNull,
     setUserPostNull,
-    getPosts
+    getPosts,
+    // Expose a refresh helper to reload current user quickly after updates
+    refreshUser: currentUser
   };
 
   return (

@@ -17,9 +17,10 @@ const cors = require("cors");
 // const { isAuthenticated } = require('./controller/user');
 
 var corsOption = {
-  origin: '*',
+  origin: process.env.CLIENT_URL || 'http://localhost:5173',
+  credentials: true,
   allowedHeaders: ['Content-Type', 'Authorization'],
-  optionsSuccessStatus: 200 ,
+  optionsSuccessStatus: 200,
   methods: 'GET, POST, DELETE, PUT, PATCH',
 }
 
@@ -31,8 +32,9 @@ app.use(expressSession({
     resave: false,  
     saveUninitialized: false,
     cookie: {
-        secure: true,
-        httpOnly: true
+        secure: process.env.NODE_ENV === 'production',
+        httpOnly: true,
+        sameSite: 'strict'
     }
 }))
 
@@ -42,21 +44,27 @@ app.use(expressSession({
 app.use(flash())
 
 app.use(logger('dev'));
-app.use(express.json());
+// Increase JSON and URL-encoded payload limits to handle base64 images
+app.use(express.json({ limit: '20mb' }));
 
 app.use(cors(corsOption))
 
 
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true, limit: '20mb' }));
 app.use(cookieParser());
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
+const PORT = process.env.PORT || 3000;
+
 conn().then(()=>{
-    app.listen(3000, ()=>{
-        console.log("Port running in localhost:3000");
+    app.listen(PORT, ()=>{
+        console.log(`Server running on http://localhost:${PORT}`);
     })
+}).catch((err)=>{
+    console.error("Failed to connect to database:", err);
+    process.exit(1);
 })
 
 module.exports = app;

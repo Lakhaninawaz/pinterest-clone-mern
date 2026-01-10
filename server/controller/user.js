@@ -6,42 +6,48 @@ const fs = require('fs')
 
 
 const signUp = async (req, res) => {
-    // console.log(req.body);
     try {
         const { email, name, username, password, contact } = req.body;
 
-        if (username === '' || email === '' || password === '') {
-            res.status(301).json({ message: "Please fill all the fields" });
+        // Validate required fields
+        if (!username || !email || !password) {
+            return res.status(400).json({ message: "Please fill all the required fields" });
         }
 
+        // Check if email already exists
+        const existingEmail = await User.findOne({ email });
+        if (existingEmail) {
+            return res.status(400).json({ message: "Email Already Registered" });
+        }
 
-        User.findOne({ email })
-            .then((user) => {
-                if (user) {
-                    res.status(302).json({ message: "Email Already Registered" });
-                } else {
+        // Check if username already exists
+        const existingUsername = await User.findOne({ username });
+        if (existingUsername) {
+            return res.status(400).json({ message: "Username Already Exists" });
+        }
 
+        // Hash password and create user
+        const hash = await new Promise((resolve, reject) => {
+            bcrypt.hash(password, 10, (error, hash) => {
+                if (error) reject(error);
+                else resolve(hash);
+            });
+        });
 
-                    User.findOne({ username })
-                        .then((user) => {
-                            if (user) {
-                                res.status(302).json({ message: "User Name Already Exists" })
-                            } else {
-                                bcrypt.hash(password, 10, async (error, hash) => {
-
-                                    if (error) res.status(500).json({ error });
-                                    let userData = new User({ email, username, password: hash, contact, name: name || username });
-                                    const response = await userData.save();
-                                    res.status(200).json({ message: "Sign Up Successful", response });
-                                })
-                            }
-                        })
-                }
-            })
+        let userData = new User({ 
+            email, 
+            username, 
+            password: hash, 
+            contact, 
+            name: name || username 
+        });
+        
+        const response = await userData.save();
+        res.status(201).json({ message: "Sign Up Successful", response });
     }
     catch (error) {
-        res.status(500).json({ message: "register Failed" });
-
+        console.log(error);
+        res.status(500).json({ message: "Registration Failed" });
     }
 
 }
@@ -218,37 +224,37 @@ const discardSavePost = async (req, res) => {
 }
 
 const editProfile = async (req, res) => {
-    // console.log(req.user);
     let { username, name, contact } = req.body;
-    //check username empty if empty so donot change username 
-    // console.log(username, name, contact);
     try {
         const user = req.user;
 
-        // console.log(user);
         if (!user) {
             return res.status(400).json({ message: 'No such user found' });
         }
 
-        if (!username) {
+        // Use current username if not provided or empty
+        if (!username || username.trim() === '') {
             username = user.username;
         }
 
-        const alreadyUser = await User.findOne({ username })
-        // console.log(alreadyUser);
-
-        if (alreadyUser && alreadyUser._id != user._id) {
-            return res.status(309).json({ message: "Username Already Taken!" });
+        // Only check for duplicate username if user is trying to change it
+        if (username !== user.username) {
+            const alreadyUser = await User.findOne({ username });
+            // If another user has this username, block the change
+            if (alreadyUser) {
+                return res.status(400).json({ message: "Username Already Taken!" });
+            }
         }
 
+        // Update user with new values or keep existing ones
         let updatedUser = await User.findByIdAndUpdate(user._id, {
-            username: username || user.username,
+            username: username,
             name: name || user.name,
             contact: contact || user.contact
         }, { new: true });
 
         if (!updatedUser) {
-            res.status(404).send({ message: "The user with the given Id was not found." });
+            return res.status(404).json({ message: "The user with the given Id was not found." });
         }
 
         res.status(200).json({ message: 'Profile Update Successfully' });
@@ -259,33 +265,36 @@ const editProfile = async (req, res) => {
 }
 
 const createPost = async (req, res) => {
-    const user = req.user;
+    try {
+        const user = req.user;
+        const { title, description, image } = req.body;
 
-    // const 
+        if (!title) {
+            return res.status(400).json({ message: "Title is required" });
+        }
 
-    const { title, description, image } = req.body;
+        const post = await Post.create({
+            title,
+            description: description ? description : 'Description not provided',
+            image,
+            user: user._id
+        })
 
-    // console.log(title, description, image);
+        user.posts.push(post._id);
+        await user.save();
 
-    const post = await Post.create({
-        title,
-        description: description ? description : 'Description not provided',
-        image,
-        user: user._id
-    })
-
-    user.posts.push(post._id);
-    await user.save();
-
-    res.status(200).json({ message: "Post Created", post });
+        res.status(200).json({ message: "Post Created", post });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ message: "Error creating post" });
+    }
 
 }
 
 const getAllPosts = async (req, res) => {
     try {
         const user = req.user;
-        const posts = await Post.find()
-        // console.log(posts);
+        const posts = await Post.find().populate("user", "username profileImage");
 
         res.status(200).json({ posts, user });
     } catch (e) {
@@ -324,106 +333,114 @@ const getPostData = async (req, res) => {
 }
 
 const deletePost = async (req, res) => {
-    const postId = req.params.cardid;
+    try {
+        const postId = req.params.cardid;
 
-    if (!req.user) {
-        return res.status(401).json({ message: 'You are not logged in' });
+        if (!req.user) {
+            return res.status(401).json({ message: 'You are not logged in' });
+        }
+
+        const post = await Post.findById(postId);
+
+        if (!post) {
+            return res.status(404).json({ message: "No post found with that id!" });
+        }
+
+        //checking if the user is the owner of the post 
+        if (String(post.user) !== String(req.userId)) {
+            return res.status(403).json({ message: 'You do not have permission to perform this action on this post!' });
+        }
+
+        //delete post of user in user.posts and delete post schema in post
+        await User.findByIdAndUpdate(req.userId, { $pull: { posts: postId } }, { new: true });
+        await Post.deleteOne({ _id: postId });
+        
+        res.status(200).json({ message: 'Deleted the post!' });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ message: "Error deleting post" });
     }
-
-    const post = await Post.findById(postId);
-
-    if (!post) {
-        return res.status(404).json({ message: "No post found with that id!" });
-    }
-
-
-    //checking if the user is the owner of the post 
-    if (String(post.user) !== String(req.userId)) {
-        return res.status(403).json({ message: 'You do not have permission to perform this action on this post!' });
-    }
-
-    //post image remove from directory
-    // if (post.image !== null) {
-    //     // fs.unlinkSync(`${__dirname}/../images/uploads/${user.profileImage}`);
-
-    //     fs.unlinkSync(`${__dirname}/../images/uploads/${post.image}`);
-    // }
-
-    //delete post of user in user.posts and delete post schema in post
-
-    await User.findByIdAndUpdate(req.userId, { $pull: { posts: postId } }, { new: true })
-        .then(() => {
-            Post.deleteOne({ _id: postId })
-                .then(() => {
-                    res.status(200).json({ message: 'Deleted the post!' })
-                }).catch((err) => {
-
-                    //   await Post.deleteOne({_id : postId}).then(()=>{
-                    //       await User.deleteOne
-                    //       res.status(200).json({message:'Deleted the post!'})
-                    //   }).catch((err)=> {
-                    res.status(500).json({ message: err })
-                })
-        })
 };
 
 //middleware for user logged in checking
 const isAuthenticated = async (req, res, next) => {
-    const token = req.headers['authorization'];
-
-    // console.log(token);
-    if (!token) {
-        console.log("token not found");
-        // return  res.status(401).json({message:"You are not authorized to do this action."})
-        return res.status(401).json({ message: "token Not Found" });
-    }
     try {
+        const token = req.headers['authorization'];
+
+        if (!token) {
+            console.log("token not found");
+            return res.status(401).json({ message: "token Not Found" });
+        }
+
         const data = jwt.verify(token, process.env.SECRET_KEY);
-
-        // console.log(data);
-
         req.userId = data.id;
-        // req.email = data.email;
         const user = await User.findById(data.id).select({ password: 0 });
-        // console.log(user);
+        
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
         req.user = user;
         return next();
     } catch (err) {
-        // console.log(err, "error in token");
-        // return err;
-
-        // Handle errors appropriately (e.g., logging, detailed error messages for development)
         console.error(err);
 
         if (err.name === 'TokenExpiredError') {
-            res.status(322).json({ message: "Token Expired" });
-            return;
+            return res.status(401).json({ message: "Token Expired" });
         } else {
-            res.status(500).json({ message: "Internal server error" });
-            return;
+            return res.status(500).json({ message: "Internal server error" });
         }
     }
-    next()
 };
 
 const checkUserAuthenticate = async (req, res, next) => {
-    // console.log(req.body);
-    const user = await User.findOne({ email: req.body.email })
-    // console.log(user);
-    if (!user) {
-        // res.send("User not found.");
-        return res.status(302).json({ message: "Incorrect Email or Password." });
+    try {
+        const user = await User.findOne({ email: req.body.email });
+
+        if (!user) {
+            return res.status(400).json({ message: "Incorrect Email or Password." });
+        }
+
+        const isMatch = await bcrypt.compare(req.body.password, user.password);
+        if (!isMatch) {
+            return res.status(400).json({ message: "Incorrect Email or Password." });
+        }
+
+        req.user = user;
+        return next();
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ message: "Server Error" });
     }
+};
 
-    const isMatch = await bcrypt.compare(req.body.password, user.password);
-    // console.log(isMatch);
-    if (!isMatch) {
-        return res.status(302).json({ message: "Incorrect Email or Password." });
+// Get public user profile with only their posts (not saved pins)
+const getPublicUserProfile = async (req, res) => {
+    try {
+        const { username } = req.params;
+
+        const user = await User.findOne({ username })
+            .select({ password: 0 })
+            .populate("posts");
+
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        // Return only public profile data (posts, not boards/saved pins)
+        const publicProfile = {
+            _id: user._id,
+            username: user.username,
+            name: user.name,
+            profileImage: user.profileImage,
+            posts: user.posts
+        };
+
+        return res.status(200).json({ user: publicProfile });
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({ message: "Internal server error" });
     }
+};
 
-    req.user = user;
-
-    return next()
-}
-
-module.exports = { signUp, signIn, logout, fileUpload, getUserData, editProfile, isAuthenticated, createPost, getAllPosts, getUserPosts, getPostData, savePost, discardSavePost, getSavedPost, deletePost, checkUserAuthenticate };
+module.exports = { signUp, signIn, logout, fileUpload, getUserData, editProfile, isAuthenticated, createPost, getAllPosts, getUserPosts, getPostData, savePost, discardSavePost, getSavedPost, deletePost, checkUserAuthenticate, getPublicUserProfile };
